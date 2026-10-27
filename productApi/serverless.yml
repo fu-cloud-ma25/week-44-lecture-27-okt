@@ -1,0 +1,33 @@
+org: jespernyberg
+service: productApi
+
+provider:
+  name: aws
+  runtime: nodejs24.x
+  architecture: arm64
+  region: eu-north-1
+  iam:
+    role: lägg din roll här
+
+functions:
+
+  getProducts:
+    handler: functions/getProducts/index.handler
+    events:
+      - httpApi:
+          path: /api/products
+          method: GET
+
+  getProductById:
+    handler: functions/getProductById/index.handler
+    events:
+      - httpApi:
+          path: /api/products/{id}
+          method: GET
+
+  addNewProduct:
+    handler: functions/addNewProduct/index.handler
+    events:
+      - httpApi:
+          path: /api/products
+          method: POST
