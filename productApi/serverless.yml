@@ -1,4 +1,4 @@
-org: jespernyberg
+org: davidzocom
 service: productApi
 
 provider:
@@ -6,8 +6,7 @@ provider:
   runtime: nodejs24.x
   architecture: arm64
   region: eu-north-1
-  iam:
-    role: lägg din roll här
+ 
 
 functions:
 
@@ -31,3 +30,18 @@ functions:
       - httpApi:
           path: /api/products
           method: POST
+
+  deleteProduct:
+    handler: functions/deleteProduct/index.handler
+    events:
+      - httpApi:
+          path: /api/products/{id}
+          method: DELETE
+
+  updateProduct:
+    handler: functions/updateProduct/index.handler
+    events:
+      - httpApi:
+          path: /api/products/{id}
+          method: PUT
+  
