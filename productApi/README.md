@@ -10,6 +10,11 @@ authorName: 'Serverless, Inc.'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 -->
 
+# install middy
+npm init -y
+npm install @middy/core @middy/http-json-body-parser @middy/http-error-handler @middy/util
+
+
 # Serverless Framework Node HTTP API on AWS
 
 This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.

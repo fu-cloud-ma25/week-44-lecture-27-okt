@@ -1,3 +1,7 @@
+import middy from "@middy/core";
+import httpJsonBodyParser from '@middy/http-json-body-parser'
+import httpErrorHandler from '@middy/http-error-handler'
+import { createError} from '@middy/util'
 import { products } from "../../data/index.mjs";
 import { sendResponse} from '../../responses/index.mjs';
 
@@ -6,26 +10,19 @@ import { sendResponse} from '../../responses/index.mjs';
 // body saknas x
 // body innehåller fel värden x
 
-export const handler = async (event) => {
+const updateProduct = async (event) => {
     const { id } = event.pathParameters;
 
-    let body;
-    try {
-        body = JSON.parse(event.body);
-    } catch {
-        return sendResponse( 400, {message : 'Body must be JSON'});
-    }
-
-    const {name, price } = body;
+    const {name, price } = event.body;
 
     if( typeof name !== 'string' || typeof price !== 'number') {
-        return sendResponse( 400, {message : 'price and name are required'});
+        throw createError(400, 'price and name are required');
     }
 
     const index = products.findIndex(p => p.id === id)
 
     if (index === -1 ) {
-        return sendResponse( 404, {message : 'No product found'});
+        throw createError(404, 'No product found');
     }
 
     const updatedProduct = {id, name, price };
@@ -37,3 +34,7 @@ export const handler = async (event) => {
         products 
     });
 }
+
+export const handler = middy(updateProduct)
+    .use(httpJsonBodyParser())
+    .use(httpErrorHandler());
